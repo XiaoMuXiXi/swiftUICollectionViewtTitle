@@ -21,10 +21,8 @@ class ViewController: UIViewController {
         return mtview
     }()
 
-    //  hahhahahhahahaha
-    
-    
-    
+ 
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = titleView
