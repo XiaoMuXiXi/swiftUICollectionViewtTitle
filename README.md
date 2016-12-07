@@ -1,0 +1,2 @@
+# swiftUICollectionViewtTitle
+用Swift3.0.1写的一个实现了标题跟着UICollectionView滚动一起滚动的效果
