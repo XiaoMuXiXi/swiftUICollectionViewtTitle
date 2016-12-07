@@ -24,15 +24,13 @@ class TheTitleView: UIView {
        
         let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 300, height: 40)
-        titleView.backgroundColor = UIColor.green
+        
         
         return titleView
     }()
     
     lazy var collectionView : UICollectionView = {
         let Layout = UICollectionViewFlowLayout()
-        // return CGSizeMake((ScreenWidth-15)/2, (ScreenWidth-15)/2-10);
-    
         Layout.itemSize = CGSize(width: ScreenW, height: ScreenH)
         Layout.minimumLineSpacing = 0
         Layout.minimumInteritemSpacing = 0
@@ -108,12 +106,13 @@ extension TheTitleView {
         indeicate.backgroundColor = self.selectBtn.titleLabel?.textColor
         indeicate.frame.origin.y = 36
         self.indicate = indeicate
-        ///  当走到这里时就给indeicate 设置宽高 ,并且设置self.selectBtn.titleLabel?.sizeToFit
+        ///  当走到这里时就给indeicate 设置宽高 ,并且设置
         self.selectBtn.titleLabel?.sizeToFit()
         self.indicate.frame.size.width = (self.selectBtn.titleLabel?.frame.size.width)!+10
         self.indicate.center.x = self.selectBtn.center.x
         self.selectBtn.isSelected = true
         titleView .addSubview(indeicate)
+        
     }
     func titleLabelClick(_ sender : UIButton){
        self.selectBtn.isSelected = false
@@ -123,7 +122,14 @@ extension TheTitleView {
         UIView .animate(withDuration: 0.25) {
             self.indicate.frame.size.width = (sender.titleLabel?.frame.size.width)!+10
             self.indicate.center.x = sender.center.x
+            
+            
         }
+        // 让collectionView滚动到对应位置
+        var contentset : CGPoint = collectionView.contentOffset
+        
+        contentset.x = CGFloat(self.selectBtn.tag) * collectionView.frame.size.width
+        collectionView .setContentOffset(contentset, animated: true)
     }
 }
 extension TheTitleView : UICollectionViewDelegate{
@@ -136,11 +142,7 @@ extension TheTitleView : UICollectionViewDelegate{
      * 前提: 人为拖拽scrollView产生的滚动动画
      */
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//        NSUInteger index = scrollView.contentOffset.x / scrollView.xmg_width;
         let index = scrollView.contentOffset.x / collectionView.frame.size.width
-
-//        XMGTitleButton *titleButton = self.titlesView.subviews[index];
-//        [self titleClick:titleButton]
         var titleBtn = UIButton()
         titleBtn = self.titleView.subviews[Int(index)] as! UIButton
         titleLabelClick(titleBtn)
@@ -150,7 +152,7 @@ extension TheTitleView : UICollectionViewDelegate{
 extension TheTitleView : UICollectionViewDataSource{
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        print(self.titlesBtlable.count)
+        
     return self.titlesBtlable.count
     
     }
@@ -158,8 +160,9 @@ extension TheTitleView : UICollectionViewDataSource{
     {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellID", for: indexPath)
+        
         /// 如果有需要则想CollectionViewCell中添加Viewcontroller.view即可
-        cell.backgroundColor = UIColor.red
+        cell.backgroundColor = UIColor.randomColor()
         return cell
     }
 }
